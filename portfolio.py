@@ -25,7 +25,14 @@ section[data-testid="stSidebar"] {background:#111827;}
 .hero-title {font-size:clamp(3.1rem,7vw,5.5rem);letter-spacing:-.065em;line-height:1.06;font-weight:820;color:#F8FAFC;margin:0 0 1.1rem;}
 .hero-title span {color:#5EEAD4;}
 .hero-lede {max-width:790px;font-size:clamp(1.13rem,2.2vw,1.55rem);line-height:1.6;color:#CBD5E1;margin-bottom:1.7rem;}
-.nav {position:sticky;top:0;z-index:999;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid #263449;padding:1.2rem 0;flex-wrap:wrap;background:rgba(11,17,32,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.nav {position:relative;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid #263449;padding:1.2rem 0;flex-wrap:wrap;background:rgba(11,17,32,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+/* Make the Streamlit wrapper sticky, not just the HTML nav. */
+[data-testid="stElementContainer"]:has(.nav) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
+  background: #0B1120 !important;
+}
 .brand {font-weight:850;letter-spacing:-.05em;font-size:1.5rem;color:#5EEAD4;}
 .nav-links {display:flex;gap:1.55rem;flex-wrap:wrap;}
 .nav-links a {color:#CBD5E1;text-decoration:none;font-size:.89rem;font-weight:650;}
@@ -195,8 +202,9 @@ html('''<nav class="nav">
       <a href="#about">About</a><a href="#experience">Experience</a>
       <a href="#projects">Projects</a><a href="#contact">Contact</a>
     </div>
-</nav>
-<section class="hero">
+</nav>''')
+
+html('''<section class="hero">
   <div class="eyebrow">Strategy · Analytics · AI · Emory MSBA 2027</div>
   <h1 class="hero-title">Hi, I'm Yerim Mo<span>.</span></h1>
   <div class="hero-lede">I connect business strategy, analytical problem-solving, and technology to turn complex data into practical decisions.</div>
