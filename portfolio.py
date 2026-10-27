@@ -58,7 +58,7 @@ section[data-testid="stSidebar"] {background:#111827;}
 .job-company {color:#5EEAD4;font-weight:650;font-size:.92rem;}
 .job ul {padding-left:1.2rem;margin:.8rem 0 0;}
 .job li {color:#C4D0DF;line-height:1.72;margin-bottom:.48rem;font-size:.92rem;}
-.featured {border:1px solid #27615F;background:#11232D;padding:2rem;border-radius:18px;margin:1.3rem 0 1.6rem;}
+.featured {border:1px solid #263449;background:#111827;padding:2rem;border-radius:18px;margin:1.3rem 0 1.6rem;}
 .featured .project-title {font-size:1.7rem;}
 .project-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;}
 .project {border:1px solid #263449;background:#111827;padding:1.5rem;border-radius:15px;display:flex;flex-direction:column;min-height:270px;}
