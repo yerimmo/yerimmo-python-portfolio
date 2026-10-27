@@ -1,33 +1,79 @@
 import streamlit as st
+from html import escape
 
 st.set_page_config(page_title="Yerim Mo | Strategy, Analytics & AI", page_icon="💠", layout="wide", initial_sidebar_state="collapsed")
 
 NAVY = "#0B1120"
 CARD = "#111827"
-BORDER = "#1F2937"
+BORDER = "#243247"
 TEXT = "#E2E8F0"
 MUTED = "#94A3B8"
 TEAL = "#5EEAD4"
 
 st.markdown("""
 <style>
-:root {color-scheme: dark;}
-.stApp, [data-testid="stAppViewContainer"] {background: #0B1120; color: #E2E8F0;}
-[data-testid="stHeader"] {background: rgba(11,17,32,.85);}
-.block-container {max-width: 1050px; padding-top: 3rem; padding-bottom: 5rem;}
-h1, h2, h3, p, li {color: #E2E8F0;}
-h1 {font-size: 3.35rem !important; font-weight: 800 !important; letter-spacing: -0.04em;}
-h2 {font-size: 1.65rem !important; font-weight: 700 !important;}
-h3 {font-size: 1.08rem !important;}
-[data-testid="stMetric"] {background:#111827; border:1px solid #1F2937; border-radius:12px; padding:20px;}
-[data-testid="stMetricValue"] {color:#5EEAD4; font-weight:800;}
-[data-testid="stMetricLabel"] {color:#E2E8F0;}
-[data-testid="stVerticalBlockBorderWrapper"] > div {border-color:#1F2937 !important; background:#111827 !important;}
-.stButton > button, .stLinkButton > a {border-radius:8px; font-weight:600;}
-.stLinkButton > a:hover {border-color:#5EEAD4; color:#5EEAD4;}
-[data-testid="stMultiSelect"] {color:#E2E8F0;}
+:root {color-scheme:dark;}
+html {scroll-behavior:smooth;}
+.stApp, [data-testid="stAppViewContainer"] {background:#0B1120;color:#E2E8F0;}
+[data-testid="stHeader"] {background:rgba(11,17,32,.75);backdrop-filter:blur(14px);}
+[data-testid="stToolbar"] {opacity:.65;}
+.block-container {max-width:1180px;padding-top:1.2rem;padding-bottom:5rem;}
 section[data-testid="stSidebar"] {background:#111827;}
-hr {border-color:#1F2937;}
+#MainMenu, footer {visibility:hidden;}
+.hero {padding:5rem 0 3rem;position:relative;}
+.eyebrow {font-size:.77rem;letter-spacing:.15em;text-transform:uppercase;font-weight:750;color:#5EEAD4;margin-bottom:1.1rem;}
+.hero-title {font-size:clamp(3.1rem,7vw,5.5rem);letter-spacing:-.065em;line-height:1.06;font-weight:820;color:#F8FAFC;margin:0 0 1.1rem;}
+.hero-title span {color:#5EEAD4;}
+.hero-lede {max-width:790px;font-size:clamp(1.13rem,2.2vw,1.55rem);line-height:1.6;color:#CBD5E1;margin-bottom:1.7rem;}
+.nav {display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid #263449;padding:1.2rem 0;flex-wrap:wrap;}
+.brand {font-weight:850;letter-spacing:-.05em;font-size:1.5rem;color:#5EEAD4;}
+.nav-links {display:flex;gap:1.55rem;flex-wrap:wrap;}
+.nav-links a {color:#CBD5E1;text-decoration:none;font-size:.89rem;font-weight:650;}
+.nav-links a:hover {color:#5EEAD4;}
+.pill-row {display:flex;gap:.7rem;flex-wrap:wrap;margin:1.3rem 0;}
+.cta {display:inline-block;text-decoration:none!important;padding:.83rem 1.2rem;border-radius:9px;font-weight:750;font-size:.93rem;transition:transform .2s,border-color .2s;}
+.cta:hover {transform:translateY(-2px);}
+.cta.primary {background:#5EEAD4;color:#0B1120!important;}
+.cta.secondary {border:1px solid #42556B;color:#E2E8F0!important;background:#111827;}
+.section {padding-top:3.7rem;margin-top:2.2rem;border-top:1px solid #263449;scroll-margin-top:5rem;}
+.section-title {font-size:clamp(1.8rem,3vw,2.35rem);letter-spacing:-.04em;color:#F8FAFC;font-weight:800;margin:.3rem 0 1.1rem;}
+.section-desc {color:#A7B5C8;max-width:790px;line-height:1.7;margin-bottom:1.7rem;}
+.stat-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:2.6rem;}
+.stat {border:1px solid #263449;background:linear-gradient(145deg,#111E30,#111827);padding:1.4rem;border-radius:15px;min-height:165px;}
+.stat .value {color:#5EEAD4;font-size:2.35rem;font-weight:850;letter-spacing:-.055em;line-height:1.25;}
+.stat .name {font-size:.89rem;font-weight:700;color:#F1F5F9;margin:.55rem 0 .35rem;}
+.stat .note {font-size:.78rem;color:#94A3B8;line-height:1.45;}
+.about-grid {display:grid;grid-template-columns:1.7fr 1fr;gap:3rem;}
+.about-copy p {font-size:1.03rem;line-height:1.85;color:#CBD5E1;margin:0 0 1.1rem;}
+.skill-group {margin-bottom:1.5rem;}
+.skill-label {font-size:.76rem;letter-spacing:.11em;color:#5EEAD4;font-weight:800;margin-bottom:.6rem;}
+.tags {display:flex;flex-wrap:wrap;gap:.45rem;}
+.tag {display:inline-block;border:1px solid #2B4650;color:#A7E9DE;background:#122C35;padding:.35rem .68rem;border-radius:999px;font-size:.76rem;font-weight:600;}
+.timeline {border-left:1px solid #2B4C56;margin-left:.55rem;padding-left:1.6rem;}
+.job {position:relative;padding:0 0 2.3rem;}
+.job:before {content:'';position:absolute;left:-2.03rem;top:.35rem;width:11px;height:11px;background:#5EEAD4;border-radius:50%;box-shadow:0 0 0 5px #12313B;}
+.job-date {color:#94A3B8;font-size:.78rem;letter-spacing:.08em;font-weight:650;}
+.job-title {font-size:1.2rem;color:#F1F5F9;font-weight:750;margin:.55rem 0 .25rem;}
+.job-company {color:#5EEAD4;font-weight:650;font-size:.92rem;}
+.job ul {padding-left:1.2rem;margin:.8rem 0 0;}
+.job li {color:#C4D0DF;line-height:1.72;margin-bottom:.48rem;font-size:.92rem;}
+.featured {border:1px solid #27615F;background:linear-gradient(120deg,#12303D 0%,#111827 72%);padding:2rem;border-radius:18px;margin:1.3rem 0 1.6rem;}
+.featured .project-title {font-size:1.7rem;}
+.project-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;}
+.project {border:1px solid #263449;background:#111827;padding:1.5rem;border-radius:15px;display:flex;flex-direction:column;min-height:270px;}
+.project-meta {color:#94A3B8;font-size:.73rem;letter-spacing:.055em;font-weight:650;text-transform:uppercase;}
+.project-title {color:#F1F5F9;font-size:1.17rem;font-weight:780;line-height:1.35;margin:.8rem 0;}
+.project-desc {color:#BBC8D8;line-height:1.7;font-size:.9rem;margin-bottom:1.1rem;}
+.project-actions {display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.2rem;}
+.project-actions a {text-decoration:none!important;color:#5EEAD4!important;font-weight:720;font-size:.88rem;}
+.project-actions a:hover {text-decoration:underline!important;}
+.planned {opacity:.76;border-style:dashed;}
+.contact-panel {border:1px solid #285459;background:linear-gradient(125deg,#102C38,#111827);padding:2.3rem;border-radius:18px;}
+.contact-panel p {color:#CBD5E1;line-height:1.7;max-width:760px;}
+.site-footer {margin-top:3rem;padding-top:1.5rem;border-top:1px solid #263449;color:#94A3B8;font-size:.83rem;}
+[data-testid="stSegmentedControl"] button {border-color:#2C4253!important;}
+[data-testid="stSegmentedControl"] button[aria-checked="true"] {background:#164C4A!important;color:#5EEAD4!important;}
+@media(max-width:760px) {.hero{padding:3.2rem 0 1.6rem}.stat-grid{grid-template-columns:repeat(2,1fr)}.about-grid,.project-grid{grid-template-columns:1fr}.nav-links{gap:.8rem}.featured{padding:1.4rem}.contact-panel{padding:1.4rem}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -113,52 +159,80 @@ PROJECTS = [{'meta': 'INDEPENDENT PROJECT · LIVE APPLICATION · 2026',
   'url': None,
   'planned': True}]
 
-with st.sidebar:
-    st.title("Yerim Mo")
-    st.caption("STRATEGY · ANALYTICS · AI")
-    st.link_button("VIP Loyalty Copilot", "https://yerimmo-vip-loyalty-copilot.streamlit.app")
-    st.link_button("GitHub Profile", "https://github.com/yerimmo")
 
-st.caption(":green[STRATEGY · ANALYTICS · AI · EMORY MSBA 2027]")
-st.title("Hi, I'm Yerim Mo 👋")
-st.markdown("#### I connect business strategy, analytical problem-solving, and technology to turn complex data into practical decisions.")
-st.write("")
+def safe(s):
+    return escape(str(s), quote=True)
 
-kpis = [("VIP Revenue", "+23%", "VIP analysis and tier optimization"),
-        ("Program Spend", "−37%", "Redesigned VIP loyalty rewards"),
-        ("International Sales", "+39%", "Targeted overseas VIP programs"),
-        ("Invoice Records", "2.4M+", "Python ERP data pipelines")]
-for col, (label, value, note) in zip(st.columns(4), kpis):
-    with col:
-        st.metric(label, value)
-        st.caption(note)
+def html(content):
+    st.markdown(content, unsafe_allow_html=True)
 
-st.divider()
-st.caption(":green[ABOUT]")
-left, right = st.columns([2, 1], gap="large")
-with left:
-    for paragraph in ABOUT:
-        st.write(paragraph)
-with right:
-    for category, tags in SKILLS:
-        st.markdown(f"**{category}**")
-        st.caption(" · ".join(tags))
+def tag_html(tags):
+    return '<div class="tags">' + ''.join(f'<span class="tag">{safe(t)}</span>' for t in tags) + '</div>'
 
-st.divider()
-st.caption(":green[EXPERIENCE]")
+def project_html(p, featured=False):
+    cls = 'featured' if featured else 'project'
+    if p.get('planned'):
+        cls += ' planned'
+    actions = []
+    if p.get('live'):
+        actions.append(f'<a href="{safe(p["live"])}" target="_blank" rel="noopener noreferrer">Explore Live Dashboard ↗</a>')
+    if p.get('url'):
+        label = 'View GitHub Code ↗' if p.get('live') else 'View Project ↗'
+        actions.append(f'<a href="{safe(p["url"])}" target="_blank" rel="noopener noreferrer">{label}</a>')
+    return f'''<article class="{cls}">
+      <div class="project-meta">{safe(p['meta'])}</div>
+      <div class="project-title">{safe(p['title'])}</div>
+      <div class="project-desc">{safe(p['desc'])}</div>
+      {tag_html(p['tags'])}
+      <div class="project-actions">{' '.join(actions)}</div>
+    </article>'''
+
+html('''<nav class="nav">
+    <span class="brand">YM<span style="color:#F8FAFC">.</span></span>
+    <div class="nav-links">
+      <a href="#about">About</a><a href="#experience">Experience</a>
+      <a href="#projects">Projects</a><a href="#contact">Contact</a>
+    </div>
+</nav>
+<section class="hero">
+  <div class="eyebrow">Strategy · Analytics · AI · Emory MSBA 2027</div>
+  <h1 class="hero-title">Hi, I'm Yerim Mo<span>.</span></h1>
+  <div class="hero-lede">I connect business strategy, analytical problem-solving, and technology to turn complex data into practical decisions.</div>
+  <div class="pill-row">
+    <a class="cta primary" href="#projects">Explore my work ↗</a>
+    <a class="cta secondary" href="#contact">Let's connect</a>
+  </div>
+</section>''')
+
+kpis = [("+23%", "VIP Revenue", "VIP analysis and tier optimization"),
+        ("−37%", "Program Spend", "Redesigned VIP loyalty rewards"),
+        ("+39%", "International Sales", "Targeted overseas VIP programs"),
+        ("2.4M+", "Invoice Records", "Python ERP data pipelines")]
+html('<div class="stat-grid">' + ''.join(
+    f'<div class="stat"><div class="value">{safe(value)}</div><div class="name">{safe(label)}</div><div class="note">{safe(note)}</div></div>'
+    for value, label, note in kpis) + '</div>')
+
+about_copy = ''.join(f'<p>{safe(paragraph)}</p>' for paragraph in ABOUT)
+skills_html = ''.join(f'<div class="skill-group"><div class="skill-label">{safe(category)}</div>{tag_html(tags)}</div>' for category,tags in SKILLS)
+html(f'''<section class="section" id="about">
+  <div class="eyebrow">01 / About</div><h2 class="section-title">A business mindset. An analytical toolkit.</h2>
+  <div class="about-grid"><div class="about-copy">{about_copy}</div><div>{skills_html}</div></div>
+</section>''')
+
+jobs = []
 for job in EXPERIENCE:
-    with st.container(border=True):
-        st.caption(job["date"])
-        st.markdown(f'### {job["role"]}')
-        st.markdown(f':green[{job["company"]}]')
-        for bullet in job["bullets"]:
-            st.markdown(f'- {bullet}')
+    bullets = ''.join(f'<li>{safe(b)}</li>' for b in job['bullets'])
+    jobs.append(f'''<div class="job"><div class="job-date">{safe(job['date'])}</div>
+      <div class="job-title">{safe(job['role'])}</div><div class="job-company">{safe(job['company'])}</div>
+      <ul>{bullets}</ul></div>''')
+html('<section class="section" id="experience"><div class="eyebrow">02 / Experience</div><h2 class="section-title">Where strategy meets execution.</h2><div class="timeline">' + ''.join(jobs) + '</div></section>')
 
-st.divider()
-st.caption(":green[SELECTED ANALYTICS PROJECTS]")
-st.write("Business questions, analytical approaches, and decisions supported by data. Public repositories are linked where available.")
+html('''<section class="section" id="projects"><div class="eyebrow">03 / Selected Analytics Projects</div>
+<h2 class="section-title">Built to answer real business questions.</h2>
+<p class="section-desc">From customer analytics to operational improvement, explore the problems, tools, and decisions behind my work.</p></section>''')
+
 filter_options = ["All", "Python", "SQL", "Streamlit", "Machine Learning", "Visualization"]
-selected = st.segmented_control("Explore by focus", filter_options, default="All")
+selected = st.segmented_control("Explore by focus", filter_options, default="All", key="project_focus")
 
 def matches(project):
     if selected == "All":
@@ -171,30 +245,22 @@ def matches(project):
     return selected.lower() in content
 
 visible = [p for p in PROJECTS if matches(p)]
+featured = next((p for p in visible if p['title'] == 'VIP Loyalty Copilot'), None)
+others = [p for p in visible if p is not featured]
+if featured:
+    html(project_html(featured, featured=True))
+if others:
+    html('<div class="project-grid">' + ''.join(project_html(p) for p in others) + '</div>')
 if not visible:
-    st.info("No projects match this filter yet.")
-for idx in range(0, len(visible), 2):
-    for col, p in zip(st.columns(2, gap="medium"), visible[idx:idx+2]):
-        with col:
-            with st.container(border=True):
-                st.caption(p["meta"])
-                st.markdown(f'### {p["title"]}')
-                st.write(p["desc"])
-                st.caption(" · ".join(p["tags"]))
-                if p.get("live"):
-                    st.link_button("Explore Live Dashboard ↗", p["live"], use_container_width=True)
-                if p.get("url"):
-                    st.link_button("View GitHub Code ↗" if p.get("live") else "View Project ↗", p["url"], use_container_width=True)
+    st.info('No projects match this filter yet.')
 
-st.divider()
-st.caption(":green[CONTACT]")
-st.header("Let's connect")
-st.write("Interested in strategy and operations, business analytics, and responsible AI-assisted workflows. I enjoy translating analysis into clear recommendations and action.")
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.link_button("Email me", "mailto:yerimmo.atl@gmail.com", use_container_width=True)
-with col2:
-    st.link_button("LinkedIn", "https://www.linkedin.com/in/yerimmo/", use_container_width=True)
-with col3:
-    st.link_button("GitHub", "https://github.com/yerimmo", use_container_width=True)
-st.caption("© 2026 Yerim Mo · Built with Python + Streamlit")
+html('''<section class="section" id="contact">
+<div class="eyebrow">04 / Contact</div>
+<div class="contact-panel"><h2 class="section-title">Let's build something meaningful.</h2>
+<p>Interested in strategy and operations, business analytics, and responsible AI-assisted workflows. I enjoy translating analysis into clear recommendations and action.</p>
+<div class="pill-row">
+  <a class="cta primary" href="mailto:yerimmo.atl@gmail.com">Email me ↗</a>
+  <a class="cta secondary" href="https://www.linkedin.com/in/yerimmo/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+  <a class="cta secondary" href="https://github.com/yerimmo" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+</div></div></section>
+<div class="site-footer">© 2026 Yerim Mo · Built with Python + Streamlit</div>''')
